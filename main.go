@@ -68,8 +68,18 @@ func (s SqsSubscription) Publish(id string, msg string) error {
 			"QueueUrl":    {s.QueueName},
 			"MessageBody": {messageBody},
 		})
+
+	if err != nil {
+		return err
+	}
+
+	// content, rErr := ioutil.ReadAll(resp.Body)
+	// fmt.Printf("Response: %s\n", content)
+
 	resp.Body.Close()
-	return err
+
+	// return rErr
+	return nil
 }
 
 type SnsReply struct {
@@ -139,7 +149,13 @@ func main() {
 
 		for _, s := range config.Subscriptions {
 			if s.Topic == values["TopicArn"][0] {
-				s.Publish(messageID, values["Message"][0])
+				err = s.Publish(messageID, values["Message"][0])
+
+				if err != nil {
+					http.Error(w, "Can't forward message", 400)
+					fmt.Printf("Can't forward message: %s\n", err)
+					return
+				}
 			}
 		}
 
