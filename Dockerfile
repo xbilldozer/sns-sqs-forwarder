@@ -1,6 +1,6 @@
 FROM golang:1.9-alpine
 
-WORKDIR /go/src/github.com/janza/sns-sqs-forwarder
+WORKDIR /go/src/github.com/xbilldozer/sns-sqs-forwarder
 
 COPY . .
 
