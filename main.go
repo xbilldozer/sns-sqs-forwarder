@@ -61,11 +61,10 @@ func (s SqsSubscription) Publish(id string, msg string) error {
 	fmt.Printf("Dispatching to: [%s] -> %s\n", s.QueueName, messageBody)
 
 	resp, err := http.PostForm(
-		fmt.Sprintf("%s?QueueName=%s", s.Endpoint, s.QueueName),
+		fmt.Sprintf("%s/queue/%s", s.Endpoint, s.QueueName),
 		url.Values{
 			"Action":      {"SendMessage"},
 			"Version":     {"2012-11-05"},
-			"QueueUrl":    {s.QueueName},
 			"MessageBody": {messageBody},
 		})
 
